@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pandas view example!</title>
+</head>
+<body>
+
+<a href="/">Home</a>
+<div align="center">
+    <h1 align="center">Pandas example page</h1>
+    <a href="https://gist.githubusercontent.com/netj/8836201/raw/6f9306ad21398ea43cba4f7d537619d0e07d5ae3/iris.csv">
+        (Iris dataframe)
+    </a>
+    <div align="center">{{ data_frame.to_html() }}</div>
+</div>
+<div align="right">Page requested at {{ requested_datetime.strftime("%m/%d/%Y, %H:%M:%S") }}</div>
+
+</body>
+</html>
