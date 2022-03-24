@@ -17,10 +17,10 @@ for app in INSTALLED_APPS:
     # exec(f'import {app}.urls')
     # exec(f'ROUTES.update({app}.urls.ROUTES)')
     # но я знал, что это "плохая практика" и изучив матчасть открыл для себя модуль importlib
-    # try:
-    app = importlib.import_module(app + '.urls')
-    # except:
-    #     raise Exception(f'Error during attempt to import "{app}" user-application')
+    try:
+        app = importlib.import_module(app + '.urls')
+    except:
+        raise Exception(f'Error during attempt to import "{app}" user-application')
     try:
         ROUTES.update(app.ROUTES)
     except:
