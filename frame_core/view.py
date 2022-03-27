@@ -8,20 +8,23 @@ class BaseView():
     def __init__(self, request):
         self.request = request
 
+    def GET(self):
+        if self.template:
+            return self.render(**self.get_context())
+        else:
+            return b''
+
+    def POST(self):
+        return self.GET()
+
     def get_page(self):
-        return self.getCode(), [self.getBody()]
+        return self.getCode(), [getattr(self, self.request['REQUEST_METHOD'])()]
 
     def getCode(self):
         return '200 OK'
 
     def get_context(self):
         return self.request
-
-    def getBody(self):
-        if self.template:
-            return self.render(**self.get_context())
-        else:
-            return b''
 
     def render(self, folder='templates/', **kwargs):
         """
@@ -37,6 +40,7 @@ class BaseView():
 
 class IndexView(BaseView):
     template = 'index.html'
+
 
 class PandasTableView(BaseView):
     df = None

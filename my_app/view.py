@@ -15,5 +15,5 @@ class myPandasView(PandasTableView):
         context = super().get_context()
         if self.request.get('POST'):
             df = context['data_frame']
-            context['data_frame'] = df[df['variety']==self.request['POST']['variety']]
+            context['data_frame'] = df[df['variety'] == self.request['POST']['variety']]
         return context

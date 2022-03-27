@@ -28,6 +28,7 @@ def base_middleware(environ):
         value = parse_input_data(data.decode(encoding='utf-8'))
     if method:
         result[method] = value
+    result['REQUEST_METHOD'] = method
 
     data = environ.get('CONTENT_LENGTH')
     print(data)
