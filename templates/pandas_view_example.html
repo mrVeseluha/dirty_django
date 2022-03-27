@@ -1,20 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Pandas view example!</title>
-</head>
-<body>
+{% extends "base.html" %}
 
-<a href="/">Home</a>
+{% block title %}
+Pandas view example!
+{% endblock %}
+
+{% block header %}
+<h1 align="center">Pandas example page</h1>
+{% endblock %}
+
+{% block content %}
+<form action="/pandas/" method="post">
+    <p><b>Variety:</b><br>
+        <input name="variety" type="text" size="40">
+    </p>
+    <p><input type="submit" value="Отправить"><input type="reset" value="Очистить"></p>
+</form>
+
 <div align="center">
-    <h1 align="center">Pandas example page</h1>
     <a href="https://gist.githubusercontent.com/netj/8836201/raw/6f9306ad21398ea43cba4f7d537619d0e07d5ae3/iris.csv">
         (Iris dataframe)
     </a>
-    <div align="center">{{ data_frame.to_html() }}</div>
+    <div align="center">{{ data_frame.to_html(classes="table") }}</div>
 </div>
-<div align="right">Page requested at {{ requested_datetime.strftime("%m/%d/%Y, %H:%M:%S") }}</div>
-
-</body>
-</html>
+{% endblock %}

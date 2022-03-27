@@ -1,4 +1,4 @@
-from jinja2 import Template
+from jinja2 import Template, Environment, FileSystemLoader
 import os
 
 
@@ -29,12 +29,9 @@ class BaseView():
         :param kwargs: параметры
         :return:
         """
-        file_path = os.path.join(os.path.abspath(folder), self.template)
-        if not os.path.exists(file_path):
-            raise Exception('Template file doesn\'t exist!')
-        # Открываем шаблон по имени
-        with open(file_path, encoding='utf-8') as f:
-            template = Template(f.read())
+        env = Environment(loader=FileSystemLoader(f'./{folder}'))
+        template = env.get_template(self.template)
+
         return bytes(template.render(**kwargs), 'utf-8')
 
 
