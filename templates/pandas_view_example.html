@@ -10,9 +10,11 @@ Pandas view example!
 
 {% block content %}
 <form action="/pandas/" method="post">
-    <p><b>Variety:</b><br>
-        <input name="variety" type="text" size="40">
-    </p>
+    <select name="variety"> <!--Supplement an id here instead of using 'name'-->
+        {% for val in data_frame.variety.unique() %}
+        <option value="{{val}}">{{val}}</option>
+        {% endfor %}
+    </select>
     <p><input type="submit" value="Отправить"><input type="reset" value="Очистить"></p>
 </form>
 
