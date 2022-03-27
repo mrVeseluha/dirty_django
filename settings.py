@@ -1,3 +1,5 @@
+SERVER_PORT = 9999
+
 INSTALLED_APPS = [
     'my_app'
 ]

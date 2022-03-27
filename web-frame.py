@@ -2,11 +2,9 @@ from wsgiref.simple_server import make_server
 
 from frame_core.urls import ROUTES
 from frame_core.middleware import MIDDLEWARE
-from settings import INSTALLED_APPS
+from settings import INSTALLED_APPS, SERVER_PORT
 
 import importlib
-
-PORT = 9999
 
 # Сначала я экспериментировал с прописыванием пользовательского приложения вручную
 # import my_app.urls
@@ -54,6 +52,6 @@ def application(environ, start_response):
     start_response(code, [('Content-Type', 'text/html')])
     return body
 
-with make_server('', PORT, application) as httpd:
-    print(f"Webserver is running at http://localhost:{PORT}")
+with make_server('', SERVER_PORT, application) as httpd:
+    print(f"Webserver is running at http://localhost:{SERVER_PORT}")
     httpd.serve_forever()
