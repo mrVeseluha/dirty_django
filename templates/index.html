@@ -1,22 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <title>Index page!</title>
-</head>
+{% block title %}
+Index page!
+{% endblock %}
 
-<body>
-<h1 align="center">Hello world!!!</h1>
-<ul> URLs:
-    <li>
-        <a href="/abc">ABC page</a>
-    </li>
-    <li>
-        <a href="/pandas">Pandas example</a>
-    </li>
-</ul>
-<div align="right">Page requested at {{ requested_datetime.strftime("%m/%d/%Y, %H:%M:%S") }}</div>
-</body>
+{% block header %}
+<h1 align="center">Home page!</h1>
+{% endblock %}
 
-</html>
+{% block content %}
+Это главная страница сайта!!!
+{% endblock %}

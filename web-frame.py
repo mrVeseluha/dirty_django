@@ -2,17 +2,17 @@ from wsgiref.simple_server import make_server
 
 from frame_core.urls import ROUTES
 from frame_core.middleware import MIDDLEWARE
-from settings import INSTALLED_APPS
+from settings import INSTALLED_APPS, SERVER_PORT
 
 import importlib
 
-# Сначала я экспериментировал с прописыванием пользовательского приложения в ручную
+# Сначала я экспериментировал с прописыванием пользовательского приложения вручную
 # import my_app.urls
 # ROUTES.update(my_app.urls.ROUTES)
 
 # Позже я решил позаимствовать решение из Django и прописать пользовательские приложения в settings.py
 for app in INSTALLED_APPS:
-    # с начала я не знал, как преобразовать строковое название пользовательского приложения в оъект Python
+    # я не знал, как преобразовать строковое название пользовательского приложения в оъект Python
     # поэтому я попробовал команды исполняющие выражения в строках
     # exec(f'import {app}.urls')
     # exec(f'ROUTES.update({app}.urls.ROUTES)')
@@ -33,6 +33,8 @@ def application(environ, start_response):
     for func in MIDDLEWARE:
         request.update(func(environ))
 
+    # print(request)
+
     # Except error
     if 'error' in environ['PATH_INFO'].lower():
         raise Exception('Detect "error" in URL path')
@@ -50,6 +52,6 @@ def application(environ, start_response):
     start_response(code, [('Content-Type', 'text/html')])
     return body
 
-with make_server('', 9999, application) as httpd:
-    print("Webserver is running at http://localhost:9999")
+with make_server('', SERVER_PORT, application) as httpd:
+    print(f"Webserver is running at http://localhost:{SERVER_PORT}")
     httpd.serve_forever()

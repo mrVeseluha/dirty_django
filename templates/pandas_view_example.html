@@ -1,20 +1,56 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Pandas view example!</title>
-</head>
-<body>
+{% extends "base.html" %}
 
-<a href="/">Home</a>
+{% block title %}
+Pandas view example!
+{% endblock %}
+
+{% block header %}
+<h1 align="center">Pandas example page</h1>
+{% endblock %}
+
+{% block content %}
+<form method="post" action="{{ URL }}">
+    <p>Выберите csv ссылку:
+        <input type="text" name="csv"
+               value="https://gist.githubusercontent.com/netj/8836201/raw/6f9306ad21398ea43cba4f7d537619d0e07d5ae3/iris.csv">
+        <input type="submit" value="Загрузить">
+    </p>
+</form>
+{% if filter %}
+<form action="{{ URL }}" method="get">
+    Filter by {{ filter.name }}:<input type="hidden" name="filter" value="{{filter.name}}">
+    <select name="{{ filter.name }}">
+        <option value="">-----</option>
+        {% for val in filter['values'] %}
+        <option value="{{val}}">{{val}}</option>
+        {% endfor %}
+    </select>
+    <p align="right"><input type="submit" value="Отправить"><input type="reset" value="Очистить"></p>
+</form>
+{% endif %}
+
 <div align="center">
-    <h1 align="center">Pandas example page</h1>
-    <a href="https://gist.githubusercontent.com/netj/8836201/raw/6f9306ad21398ea43cba4f7d537619d0e07d5ae3/iris.csv">
-        (Iris dataframe)
-    </a>
-    <div align="center">{{ data_frame.to_html() }}</div>
+    <div align="center">
+        <table class="table table-sm">
+            <thead>
+            <tr align="center">
+                <th>Index</th>
+                {% for column in data_frame.columns %}
+                <th><a href="{{ URL }}?filter={{ column }}">{{ column }}</a>
+                    <a href="{{ URL }}?sort={{ column }}">▲</a>
+                    <a href="{{ URL }}?sort=-{{ column }}">▼</a></th>
+                {% endfor %}
+            </tr>
+            {% for index in data_frame.index %}
+            <tr align="center">
+                <td>{{ index }}</td>
+                {% for column in data_frame.columns %}
+                <td>{{ data_frame.loc[index][column]}}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+            </thead>
+        </table>
+    </div>
 </div>
-<div align="right">Page requested at {{ requested_datetime.strftime("%m/%d/%Y, %H:%M:%S") }}</div>
-
-</body>
-</html>
+{% endblock %}
