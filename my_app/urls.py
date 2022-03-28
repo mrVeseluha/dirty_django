@@ -1,6 +1,7 @@
-from .view import myView, myPandasView
+from .view import *
 
 ROUTES = {
     '/abc/': myView,
     '/pandas/': myPandasView,
+    '/message_board/': myMessageBoardView,
 }
