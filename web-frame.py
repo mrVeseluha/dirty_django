@@ -33,7 +33,7 @@ def application(environ, start_response):
     for func in MIDDLEWARE:
         request.update(func(environ))
 
-    print(request)
+    # print(request)
 
     # Except error
     if 'error' in environ['PATH_INFO'].lower():
