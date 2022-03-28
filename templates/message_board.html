@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}
+Message board!
+{% endblock %}
+
+{% block header %}
+<h1 align="center" xmlns="http://www.w3.org/1999/html">Message board!!!</h1>
+{% endblock %}
+
+{% block content %}
+<form method="post" action="{{ URL }}">
+    <table>
+        <tr>
+            <td>Name:</td>
+            <td><input type="text" name="name" required></td>
+        </tr>
+        <tr>
+            <td>E-Mail:</td>
+            <td><input type="text" name="email" required></td>
+        </tr>
+        <tr>
+            <td>Message title:</td>
+            <td><input type="text" name="message_title" required></td>
+        </tr>
+        <tr>
+            <td>Message text:</td>
+            <td><textarea name="message" cols="100" required></textarea></td>
+        </tr>
+    </table>
+    <p><input type="submit" value="Отправить"><input type="reset" value="Очистить"></p>
+</form>
+{% if messages %}
+<table class="table">
+    {% for message in messages %}
+    <tr>
+        <td>
+            From: <a href="mailto:{{ message.email }}">{{ message.name }}</a><br>
+            {{ message.message_title }}
+        </td>
+    </tr>
+    <tr><td>{{ message.message.replace('\n', '<br>') }}</td></tr>
+    {% endfor %}
+</table>
+{% endif %}
+{% endblock%}
