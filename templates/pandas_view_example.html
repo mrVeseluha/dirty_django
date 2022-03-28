@@ -9,19 +9,48 @@ Pandas view example!
 {% endblock %}
 
 {% block content %}
-<form action="/pandas/" method="post">
-    <select name="variety"> <!--Supplement an id here instead of using 'name'-->
-        {% for val in data_frame.variety.unique() %}
+<form method="post" action="{{ URL }}">
+    <p>Выберите csv ссылку:
+        <input type="text" name="csv"
+               value="https://gist.githubusercontent.com/netj/8836201/raw/6f9306ad21398ea43cba4f7d537619d0e07d5ae3/iris.csv">
+        <input type="submit" value="Загрузить">
+    </p>
+</form>
+{% if filter %}
+<form action="{{ URL }}" method="get">
+    Filter by {{ filter.name }}:<input type="hidden" name="filter" value="{{filter.name}}">
+    <select name="{{ filter.name }}">
+        <option value="">-----</option>
+        {% for val in filter['values'] %}
         <option value="{{val}}">{{val}}</option>
         {% endfor %}
     </select>
-    <p><input type="submit" value="Отправить"><input type="reset" value="Очистить"></p>
+    <p align="right"><input type="submit" value="Отправить"><input type="reset" value="Очистить"></p>
 </form>
+{% endif %}
 
 <div align="center">
-    <a href="https://gist.githubusercontent.com/netj/8836201/raw/6f9306ad21398ea43cba4f7d537619d0e07d5ae3/iris.csv">
-        (Iris dataframe)
-    </a>
-    <div align="center">{{ data_frame.to_html(classes="table") }}</div>
+    <div align="center">
+        <table class="table table-sm">
+            <thead>
+            <tr align="center">
+                <th>Index</th>
+                {% for column in data_frame.columns %}
+                <th><a href="{{ URL }}?filter={{ column }}">{{ column }}</a>
+                    <a href="{{ URL }}?sort={{ column }}">▲</a>
+                    <a href="{{ URL }}?sort=-{{ column }}">▼</a></th>
+                {% endfor %}
+            </tr>
+            {% for index in data_frame.index %}
+            <tr align="center">
+                <td>{{ index }}</td>
+                {% for column in data_frame.columns %}
+                <td>{{ data_frame.loc[index][column]}}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+            </thead>
+        </table>
+    </div>
 </div>
 {% endblock %}
