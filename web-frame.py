@@ -2,9 +2,11 @@ from wsgiref.simple_server import make_server
 
 from frame_core.urls import ROUTES
 from frame_core.middleware import MIDDLEWARE
-from settings import INSTALLED_APPS, SERVER_PORT
+from settings import INSTALLED_APPS, SERVER_PORT, STATIC_ROOT, STATIC_URL
 
 import importlib
+import mimetypes
+import os
 
 # Сначала я экспериментировал с прописыванием пользовательского приложения вручную
 # import my_app.urls
@@ -32,14 +34,25 @@ def application(environ, start_response):
     # в цикле переберём все функции из MIDDLEWARE и сохраним результаты в request
     for func in MIDDLEWARE:
         request.update(func(environ))
+    request['STATIC_PREFIX'] = STATIC_URL
 
-    # print(request)
-
-    # Except error
-    if 'error' in environ['PATH_INFO'].lower():
-        raise Exception('Detect "error" in URL path')
     # считываем значение URL из переменной environ и переводим его в нижний регистр
     path = environ['PATH_INFO'].lower()
+
+    # проверяем запрос на запрос файла, если начало url начинается с STATIC_URL то пришёл запрос на файл
+    if path.startswith(STATIC_URL):
+        # если файл существует
+        if os.path.exists(STATIC_ROOT + path[len(STATIC_URL):]):
+            # открываем его на чтение
+            with open(STATIC_ROOT + path[len(STATIC_URL):], 'rb') as file:
+                # читаем содержимое
+                content = file.read()
+            # при помощи стандартной библиотеки mimetypes определяем тип файла и формируем заголовок
+            headers = [('content-type', mimetypes.guess_type(path)[0])]
+            # возвращаем все данные в соответствии с PEP 3333
+            start_response('200 OK', headers)
+            return [content]
+
     # проверяем наличие закрывающего бэкслэша и если его нет то добавляем
     path = path if path[-1] == '/' else path + '/'
     # получаем view функцию из списка ROUTES или None если его нет
@@ -49,7 +62,8 @@ def application(environ, start_response):
         code, body = view_class(request).get_page()
     else:
         code, body = '404 WHAT', [b'404 PAGE Not Found']
-    start_response(code, [('Content-Type', 'text/html')])
+    headers = [('Content-Type', 'text/html\nSet-Cookie: yummy_cookie=choco')]
+    start_response(code, headers)
     return body
 
 with make_server('', SERVER_PORT, application) as httpd:
