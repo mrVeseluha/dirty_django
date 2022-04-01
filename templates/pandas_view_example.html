@@ -19,7 +19,7 @@ Pandas view example!
 {% if filter %}
 <form action="{{ URL }}" method="get">
     Filter by {{ filter.name }}:<input type="hidden" name="filter" value="{{filter.name}}">
-    <select name="{{ filter.name }}">
+    <select name="{{ filter.name }}" onchange="this.form.submit()">
         <option value="">-----</option>
         {% for val in filter['values'] %}
         <option value="{{val}}">{{val}}</option>

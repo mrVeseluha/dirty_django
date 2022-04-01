@@ -1,5 +1,8 @@
-from jinja2 import Template, Environment, FileSystemLoader
-import os
+from jinja2 import Environment, FileSystemLoader
+
+
+# from jinja2 import Template
+# import os
 
 
 class BaseView():
@@ -33,6 +36,7 @@ class BaseView():
         :return:
         """
         env = Environment(loader=FileSystemLoader(f'./{folder}'))
+        # env.globals['STATIC_PREFIX'] = 'static/'
         template = env.get_template(self.template)
 
         return bytes(template.render(**kwargs), 'utf-8')
