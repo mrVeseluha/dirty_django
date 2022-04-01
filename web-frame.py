@@ -7,6 +7,7 @@ from settings import INSTALLED_APPS, SERVER_PORT, STATIC_ROOT, STATIC_URL
 import importlib
 import mimetypes
 import os
+from http import cookies
 
 # Сначала я экспериментировал с прописыванием пользовательского приложения вручную
 # import my_app.urls
@@ -27,6 +28,7 @@ for app in INSTALLED_APPS:
         ROUTES.update(app.ROUTES)
     except:
         raise Exception(f'Error during load users urls from {app}.urls.py')
+
 
 def application(environ, start_response):
     # объявим переменную request для view функций, как пустой словарь
@@ -53,6 +55,18 @@ def application(environ, start_response):
             start_response('200 OK', headers)
             return [content]
 
+    # print(environ)
+    C = cookies.SimpleCookie()
+    if ('HTTP_COOKIE' in environ) and (path.replace('/', '_') in environ['HTTP_COOKIE']) and (
+    not path.startswith(STATIC_URL)):
+        C.load(environ['HTTP_COOKIE'])
+        C[path.replace('/', '_')] = int(C[path.replace('/', '_')].value) + 1
+        request['PAGE_ACCES_COUNTER'] = C[path.replace('/', '_')].value
+    else:
+        if not path.startswith(STATIC_URL):
+            C[path.replace('/', '_')] = 1
+            request['PAGE_ACCES_COUNTER'] = 1
+
     # проверяем наличие закрывающего бэкслэша и если его нет то добавляем
     path = path if path[-1] == '/' else path + '/'
     # получаем view функцию из списка ROUTES или None если его нет
@@ -62,9 +76,10 @@ def application(environ, start_response):
         code, body = view_class(request).get_page()
     else:
         code, body = '404 WHAT', [b'404 PAGE Not Found']
-    headers = [('Content-Type', 'text/html\nSet-Cookie: yummy_cookie=choco')]
+    headers = [('Content-Type', 'text/html\n' + C.output())]
     start_response(code, headers)
     return body
+
 
 with make_server('', SERVER_PORT, application) as httpd:
     print(f"Webserver is running at http://localhost:{SERVER_PORT}")
