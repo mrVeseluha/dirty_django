@@ -65,7 +65,7 @@ def application(environ, start_response):
     else:
         if not path.startswith(STATIC_URL):
             C[path.replace('/', '_')] = 1
-            request['PAGE_ACCES_COUNTER'] = 1
+            request['PAGE_ACCESS_COUNTER'] = 1
 
     # проверяем наличие закрывающего бэкслэша и если его нет то добавляем
     path = path if path[-1] == '/' else path + '/'
