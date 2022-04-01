@@ -75,7 +75,7 @@ def application(environ, start_response):
     if view_class:
         code, body = view_class(request).get_page()
     else:
-        code, body = '404 WHAT', [b'404 PAGE Not Found']
+        code, body = '404 WHAT', [b'404 PAGE Not Found!']
     headers = [('Content-Type', 'text/html\n' + C.output())]
     start_response(code, headers)
     return body
