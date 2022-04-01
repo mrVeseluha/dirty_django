@@ -61,7 +61,7 @@ def application(environ, start_response):
     not path.startswith(STATIC_URL)):
         C.load(environ['HTTP_COOKIE'])
         C[path.replace('/', '_')] = int(C[path.replace('/', '_')].value) + 1
-        request['PAGE_ACCES_COUNTER'] = C[path.replace('/', '_')].value
+        request['PAGE_ACCESS_COUNTER'] = C[path.replace('/', '_')].value
     else:
         if not path.startswith(STATIC_URL):
             C[path.replace('/', '_')] = 1
