@@ -1,0 +1,28 @@
+{% extends "courses/base.html" %}
+
+{% block title %}
+Курсы по обучению чему хочешь!
+{% endblock %}
+
+{% block header %}
+<h1 align="center">Курсы по обучению чему хочешь!!!</h1>
+{% endblock %}
+
+{% block content %}
+
+{% if categories %}
+<h3>У нас имеются курсы следующих категорий:</h3>
+<ul>
+    {% for cat in categories %}
+    <li>{{ cat }} <a href="{{ URL }}?clone={{ loop.index0 }}">(сделать копию)</a></li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+<h3>Вы можете добавить новую категорию:</h3>
+
+<form method="post" action="{{ URL }}">
+    Имя новой категории: <input type="text" name="name" require>
+    <input type="submit" value="Добавить"><input type="reset" value="Очистить">
+</form>
+{% endblock%}

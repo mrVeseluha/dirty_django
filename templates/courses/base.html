@@ -22,25 +22,22 @@
     <div class="row p-0">
         <div class="col col-md-auto p-2">
             <img src="{{ STATIC_PREFIX }}Python_icon_(black_and_white).svg.png" height="100" width="100">
-            <h4>Site tree</h4>
+            <h4>Меню</h4>
             <ul>
                 <li>
-                    <a href="/">Home</a>
-                </li>
-                <li>
-                    <a href="/abc">ABC page</a>
-                </li>
-                <li>
-                    <a href="/pandas">Pandas example</a>
-                </li>
-                <li>
-                    <a href="/message_board/">Message board</a>
-                </li>
-                <li>
-                    <a href="{{ STATIC_PREFIX }}csv/username.csv">CSV example</a>
-                </li>
-                <li>
                     <a href="/courses/">4 урок! Курсы обучения!</a>
+                </li>
+                <li>
+                    <a href="/courses/categories/">Категория курсов</a>
+                </li>
+                <li>
+                    <a href="{{ STATIC_PREFIX }}view.log">Лог view функций</a>
+                </li>
+                <li>
+                    <a href="{{ STATIC_PREFIX }}model.log">Лог модели данных</a>
+                </li>
+                <li>
+                    <a href="/">Home</a>
                 </li>
             </ul>
             Page loaded: {{PAGE_ACCESS_COUNTER}}

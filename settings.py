@@ -4,5 +4,6 @@ STATIC_ROOT = 'static/'
 STATIC_URL = '/static/'
 
 INSTALLED_APPS = [
-    'my_app'
+    'my_app',
+    'courses'
 ]
